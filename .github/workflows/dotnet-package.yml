@@ -5,8 +5,7 @@ on:
     tags:
       - 'v*.*.*'
 env:     
-  SOLUTION_NAME: FFF.LazyMemoryCache.sln                
-  ROOT_PARH: ./FFF.LazyMemoryCache
+  SOLUTION_NAME: FFF.LazyMemoryCache.sln    
   REPORT_FILE_NAME: test_results.xml
   REPORT_DIRECTORY: reports
   CONFIGURATION: Release
@@ -26,9 +25,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-
-    - name: sss
-      run: dir
       
     - name: Restore dependencies
       run: dotnet restore ${{ env.SOLUTION_NAME }}
@@ -53,5 +49,5 @@ jobs:
         nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ github.actor }}/index.json" -Username $username -Password $password
         
         # Push the package to GitHub Packages
-        nuget push "*.nupkg" -Source "GitHub" -ApiKey $password   
+        nuget push "bin/${{ env.CONFIGURATION }}/*.nupkg" -Source "GitHub" -ApiKey $password   
       shell: pwsh
