@@ -37,7 +37,7 @@ jobs:
     - name: Run NUnit Tests
       run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=${{ env.REPORT_FILE_NAME }}" --results-directory ./${{ env.REPORT_DIRECTORY }} 
 
-    - name: Push Package Into GitHub
+    - name: Push generated package to GitHub registry
       run: |
         $username = "${{ github.actor }}"
         $password = "${{ secrets.GITHUB_TOKEN }}" 
@@ -46,8 +46,8 @@ jobs:
         $env:VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = '{"endpointCredentials":[{"endpoint": $feedEndpoint,"username":$username,"password": $password}]}'
         
         # Add the NuGet source with authentication
-        nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ github.actor }}/index.json" -Username $username -Password $password
+        dotnet nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ github.actor }}/index.json" -Username $username -Password $password
         
         # Push the package to GitHub Packages
-        nuget push "bin/${{ env.CONFIGURATION }}/*.nupkg" -Source "GitHub" -ApiKey $password   
+        dotnet nuget push .bin/${{ env.CONFIGURATION }}/*.nupkg -Source "GitHub" -ApiKey $password  --skip-duplicate --no-symbols true  
       shell: pwsh
