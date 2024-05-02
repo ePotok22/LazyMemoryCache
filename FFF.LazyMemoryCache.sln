@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFF.LazyMemoryCache", "FFF.LazyMemoryCache\FFF.LazyMemoryCache.csproj", "{6C4ADB1C-A66E-4FA5-A578-A582C97B7DDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFF.LazyMemoryCache.Tests", "FFF.LazyMemoryCache.Tests\FFF.LazyMemoryCache.Tests.csproj", "{18DB8AC0-52D9-447C-9CB5-F4A62D508B6D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C4ADB1C-A66E-4FA5-A578-A582C97B7DDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C4ADB1C-A66E-4FA5-A578-A582C97B7DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C4ADB1C-A66E-4FA5-A578-A582C97B7DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C4ADB1C-A66E-4FA5-A578-A582C97B7DDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18DB8AC0-52D9-447C-9CB5-F4A62D508B6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18DB8AC0-52D9-447C-9CB5-F4A62D508B6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18DB8AC0-52D9-447C-9CB5-F4A62D508B6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18DB8AC0-52D9-447C-9CB5-F4A62D508B6D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0BAE02E1-D8E7-4D91-BE30-DDCC68BF9982}
+	EndGlobalSection
+EndGlobal

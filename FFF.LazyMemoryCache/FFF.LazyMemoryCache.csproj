@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Lazy Memory Cache</Title>
+		<Copyright>Copyright © 2024</Copyright>
+		<IncludeSymbols>False</IncludeSymbols>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+		<PackageTags>MemoryCache, Memory, Cache</PackageTags>
+		<Description>Lazy memory cache is a simple in-memory caching service. It has a developer friendly generics based API, and provides a thread safe cache implementation that guarantees to only execute your cachable delegates once (it's lazy!). Under the hood it leverages Microsoft.Extensions.Caching and Lazy to provide performance and reliability in heavy load scenarios.</Description>
+		<Authors>FFF</Authors>
+		<Product>Lazy Memory Cache</Product>
+    		<Version>1.1.0</Version>
+    		<AssemblyVersion>1.1.0.0</AssemblyVersion>
+    		<FileVersion>1.1.0.0</FileVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
+	</ItemGroup>
+
+</Project>
