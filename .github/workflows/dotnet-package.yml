@@ -49,5 +49,5 @@ jobs:
         dotnet nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ github.actor }}/index.json" -Username $username -Password $password
         
         # Push the package to GitHub Packages
-        dotnet nuget push .bin/${{ env.CONFIGURATION }}/*.nupkg -Source "GitHub" -ApiKey $password  --skip-duplicate --no-symbols true  
+        dotnet nuget push ".bin/${{ env.CONFIGURATION }}/*.nupkg" -Source "GitHub" -ApiKey $password
       shell: pwsh
