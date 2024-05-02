@@ -41,7 +41,7 @@ jobs:
       run: dotnet pack ${{ env.SOLUTION_NAME }} --no-build --output ./nupkgs
 
     - name: Push Package Into NuGet
-      run: nuget push *.nupkg -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json 
+      run: nuget push "./nupkgs/*.nupkg" -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json 
       if: success()
       
     # - name: Push generated package to GitHub registry
