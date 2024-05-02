@@ -16,10 +16,6 @@ env:
 jobs:
   build-test:
     runs-on: windows-latest
-
-    defaults:
-      run:
-        working-directory: ${{ env.ROOT_PARH }}
       
     steps:  
     - name: Checkout 
