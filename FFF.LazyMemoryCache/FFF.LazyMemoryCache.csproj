@@ -16,6 +16,8 @@
     		<Version>1.1.0</Version>
     		<AssemblyVersion>1.1.0.0</AssemblyVersion>
     		<FileVersion>1.1.0.0</FileVersion>
+    		<PackageProjectUrl>https://www.nuget.org/packages/FFF.LazyMemoryCache</PackageProjectUrl>
+    		<RepositoryUrl>https://github.com/ePotok22/LazyMemoryCache</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
