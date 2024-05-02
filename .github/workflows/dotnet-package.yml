@@ -13,7 +13,7 @@ env:
   DOTNET_VERSION: '6.0.x'
 
 jobs:
-  build-test:
+  build-test-package:
     runs-on: windows-latest
       
     steps:  
@@ -41,17 +41,17 @@ jobs:
     - name: Run NUnit Tests
       run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=${{ env.REPORT_FILE_NAME }}" --results-directory ./${{ env.REPORT_DIRECTORY }} 
 
-    # - name: Push Package Into GitHub
-    #   run: |
-    #     $username = "${{ github.actor }}"
-    #     $password = "${{ secrets.GITHUB_TOKEN }}" 
-    #     $feedEndpoint = "https://nuget.pkg.github.com/${{ github.actor }}/index.json"
-    #     $env:NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED = "true"
-    #     $env:VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = '{"endpointCredentials":[{"endpoint": $feedEndpoint,"username":$username,"password": $password}]}'
+    - name: Push Package Into GitHub
+      run: |
+        $username = "${{ github.actor }}"
+        $password = "${{ secrets.GITHUB_TOKEN }}" 
+        $feedEndpoint = "https://nuget.pkg.github.com/${{ github.actor }}/index.json"
+        $env:NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED = "true"
+        $env:VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = '{"endpointCredentials":[{"endpoint": $feedEndpoint,"username":$username,"password": $password}]}'
         
-    #     # Add the NuGet source with authentication
-    #     nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ github.actor }}/index.json" -Username $username -Password $password
+        # Add the NuGet source with authentication
+        nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ github.actor }}/index.json" -Username $username -Password $password
         
-    #     # Push the package to GitHub Packages
-    #     nuget push "*.nupkg" -Source "GitHub" -ApiKey $password   
-    #   shell: pwsh
+        # Push the package to GitHub Packages
+        nuget push "*.nupkg" -Source "GitHub" -ApiKey $password   
+      shell: pwsh
