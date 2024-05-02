@@ -1,0 +1,27 @@
+name: 'Test Report'
+on:
+  workflow_run:
+    workflows: ['CI'] 
+    types:
+      - completed
+permissions:
+  contents: read
+  actions: read
+  checks: write
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create reporter
+      uses: dorny/test-reporter@v1.8.0
+      with:
+        artifact: test-results
+        name: "test-report"
+        path: '*.xml' 
+        reporter: dotnet-trx
+
+    - name: Delete test artifact
+      uses: geekyeggo/delete-artifact@v4.1.0
+      with:
+         name: test-results
+         token: ${{ secrets.GITHUB_TOKEN }}

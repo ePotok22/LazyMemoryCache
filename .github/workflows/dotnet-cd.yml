@@ -1,0 +1,52 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: 'CI'
+
+on: [pull_request]
+    
+env:     
+  SOLUTION_NAME: FFF.LazyMemoryCache.sln                
+  ROOT_PARH: ./FFF.LazyMemoryCache
+  REPORT_FILE_NAME: test_results.xml
+  REPORT_DIRECTORY: reports
+  CONFIGURATION: Release
+  DOTNET_VERSION: '6.0.x'
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        working-directory: ${{ env.ROOT_PARH }}
+      
+    steps:  
+    - name: Checkout 
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+      
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.SOLUTION_NAME }}
+      
+    - name: Build
+      run: dotnet build ${{ env.SOLUTION_NAME }} --no-restore 
+      env:
+        Configuration: ${{ env.CONFIGURATION }}
+    
+    - name: Run NUnit Tests
+      run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=${{ env.REPORT_FILE_NAME }}" --results-directory ./${{ env.REPORT_DIRECTORY }}  
+
+    - name: Upload test-report artifact
+      uses: actions/upload-artifact@v3
+      if: success() || failure()
+      with:
+        name: test-results
+        path:  ${{ env.ROOT_PARH }}/${{ env.REPORT_DIRECTORY }}/${{ env.REPORT_FILE_NAME }}
+        
