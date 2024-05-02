@@ -40,21 +40,8 @@ jobs:
     - name: Pack
       run: dotnet pack ${{ env.SOLUTION_NAME }} --no-build --output ./nupkgs
 
-    - name: List contents of the package directory
-      run: dir ./nupkgs
-    
     - name: Push Package Into NuGet
-      run: |
-        $files = Get-ChildItem -Path "./nupkgs" -Filter "*.nupkg"
-        if ($files.Length -eq 0) {
-          Write-Host "No packages found to push."
-        } else {
-          foreach ($file in $files) {
-            Write-Host "Pushing $file..."
-            dotnet nuget push "$file.FullName" --api-key ${{ secrets.NUGET_API_KEY }} --source "https://api.nuget.org/v3/index.json" --skip-duplicate
-          }
-        }
-      shell: pwsh
+      run: dotnet nuget push "./nupkgs/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source "https://api.nuget.org/v3/index.json" --skip-duplicate
       if: success()
       
     # - name: Push generated package to GitHub registry
