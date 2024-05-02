@@ -39,24 +39,28 @@ jobs:
 
     - name: Pack
       run: dotnet pack ${{ env.SOLUTION_NAME }} --no-build --output ./nupkgs
-      
-    - name: Push generated package to GitHub registry
-      run: |
-        $username = "${{ github.actor }}"
-        $password = "${{ secrets.GITHUB_TOKEN }}" 
-        $feedEndpoint = "https://nuget.pkg.github.com/${{ github.actor }}/index.json"
-        $env:NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED = "true"
-        $env:VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = '{"endpointCredentials":[{"endpoint": $feedEndpoint,"username":$username,"password": $password}]}'
-        
-        # # Add the NuGet source with authentication
-        # dotnet nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ github.actor }}/index.json" -Username $username -Password $password
-        
-        # # Push the package to GitHub Packages
-        # dotnet nuget push "./nupkgs/*.nupkg" -Source "GitHub" -ApiKey $password
 
-         # Add the NuGet source with authentication
-        dotnet nuget add source "https://nuget.pkg.github.com/${{ github.actor }}/index.json" --name "GitHub" --username $username --password $password --store-password-in-clear-text
+    - name: Push Package Into NuGet
+      run: nuget push *.nupkg -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json 
+      if: success()
+      
+    # - name: Push generated package to GitHub registry
+    #   run: |
+    #     $username = "${{ github.actor }}"
+    #     $password = "${{ secrets.GITHUB_TOKEN }}" 
+    #     $feedEndpoint = "https://nuget.pkg.github.com/${{ github.actor }}/index.json"
+    #     $env:NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED = "true"
+    #     $env:VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = '{"endpointCredentials":[{"endpoint": $feedEndpoint,"username":$username,"password": $password}]}'
         
-        # Push the package to GitHub Packages
-        dotnet nuget push "./nupkgs/*.nupkg" --source "GitHub" --api-key $password  --skip-duplicate --no-symbols true
-      shell: pwsh
+    #     # # Add the NuGet source with authentication
+    #     # dotnet nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ github.actor }}/index.json" -Username $username -Password $password
+        
+    #     # # Push the package to GitHub Packages
+    #     # dotnet nuget push "./nupkgs/*.nupkg" -Source "GitHub" -ApiKey $password
+
+    #      # Add the NuGet source with authentication
+    #     dotnet nuget add source "https://nuget.pkg.github.com/${{ github.actor }}/index.json" --name "GitHub" --username $username --password $password --store-password-in-clear-text
+        
+    #     # Push the package to GitHub Packages
+    #     dotnet nuget push "./nupkgs/*.nupkg" --source "GitHub" --api-key $password 
+    #   shell: pwsh
