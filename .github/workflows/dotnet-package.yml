@@ -1,0 +1,58 @@
+name: 'Package'
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+env:     
+  SOLUTION_NAME: FFF.LazyMemoryCache.sln                
+  ROOT_PARH: ./FFF.LazyMemoryCache
+  REPORT_FILE_NAME: test_results.xml
+  REPORT_DIRECTORY: reports
+  CONFIGURATION: Release
+  DOTNET_VERSION: '6.0.x'
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        working-directory: ${{ env.ROOT_PARH }}
+      
+    steps:  
+    - name: Checkout 
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+      
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.SOLUTION_NAME }}
+      
+    - name: Build
+      run: dotnet build ${{ env.SOLUTION_NAME }} --no-restore 
+      env:
+        Configuration: ${{ env.CONFIGURATION }}
+    
+    - name: Run NUnit Tests
+      run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=${{ env.REPORT_FILE_NAME }}" --results-directory ./${{ env.REPORT_DIRECTORY }} 
+
+    - name: Push Package Into GitHub
+      run: |
+        $username = "${{ github.actor }}"
+        $password = "${{ secrets.GITHUB_TOKEN }}" 
+        $feedEndpoint = "https://nuget.pkg.github.com/${{ github.actor }}/index.json"
+        $env:NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED = "true"
+        $env:VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = '{"endpointCredentials":[{"endpoint": $feedEndpoint,"username":$username,"password": $password}]}'
+        
+        # Add the NuGet source with authentication
+        nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ github.actor }}/index.json" -Username $username -Password $password
+        
+        # Push the package to GitHub Packages
+        nuget push "*.nupkg" -Source "GitHub" -ApiKey $password   
+      shell: pwsh
