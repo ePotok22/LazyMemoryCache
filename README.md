@@ -93,4 +93,3 @@ LazyMemoryCache is open-sourced software licensed under the MIT license.
 
 ## Contact
 Project Repository: https://github.com/yourusername/LazyMemoryCache
-Creator's Contact: [your.email
